@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Tree</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="skillTreeCanvas"></canvas>
+
+    <script>
+        const skillData = [
+            // Core Programming Fundamentals
+  { id: 1, name: "Variables & Data Types", description: "Understanding basic programming constructs", dependsOn: [] },
+  { id: 2, name: "Control Flow", description: "Loops, conditionals, and program flow", dependsOn: [1] },
+  { id: 3, name: "Functions", description: "Function declaration, parameters, and scope", dependsOn: [2] },
+  { id: 4, name: "Data Structures", description: "Arrays, objects, and basic collections", dependsOn: [2] },
+
+  // Object-Oriented Path
+  { id: 5, name: "OOP Basics", description: "Classes, objects, and inheritance", dependsOn: [3, 4] },
+  { id: 6, name: "Design Patterns", description: "Common OOP patterns and implementations", dependsOn: [5] },
+  { id: 7, name: "Advanced OOP", description: "SOLID principles and clean architecture", dependsOn: [6] },
+
+  // Functional Programming Path
+  { id: 8, name: "Pure Functions", description: "Immutability and side effects", dependsOn: [3] },
+  { id: 9, name: "Higher Order Functions", description: "Functions as first-class citizens", dependsOn: [8] },
+  { id: 10, name: "Functional Patterns", description: "Monads, functors, and composition", dependsOn: [9] },
+
+  // Database Path
+  { id: 11, name: "SQL Basics", description: "Basic queries and database concepts", dependsOn: [4] },
+  { id: 12, name: "Database Design", description: "Schema design and normalization", dependsOn: [11] },
+  { id: 13, name: "Advanced SQL", description: "Complex queries and optimization", dependsOn: [12] },
+  { id: 14, name: "NoSQL Databases", description: "Document and key-value stores", dependsOn: [12] },
+
+  // Web Development Frontend
+  { id: 15, name: "HTML & CSS", description: "Web markup and styling", dependsOn: [] },
+  { id: 16, name: "JavaScript DOM", description: "Browser APIs and manipulation", dependsOn: [3, 15] },
+  { id: 17, name: "Frontend Frameworks", description: "React, Vue, or Angular", dependsOn: [16] },
+  { id: 18, name: "State Management", description: "Redux, Vuex, or similar", dependsOn: [17] },
+
+  // Web Development Backend
+  { id: 19, name: "Server Basics", description: "HTTP and web servers", dependsOn: [3] },
+  { id: 20, name: "API Design", description: "RESTful and GraphQL APIs", dependsOn: [19] },
+  { id: 21, name: "Authentication", description: "User auth and security", dependsOn: [20] },
+  { id: 22, name: "Microservices", description: "Distributed system design", dependsOn: [21, 7] },
+
+  // DevOps Path
+  { id: 23, name: "Version Control", description: "Git and collaboration", dependsOn: [] },
+  { id: 24, name: "CI/CD", description: "Continuous integration and deployment", dependsOn: [23] },
+  { id: 25, name: "Containers", description: "Docker and containerization", dependsOn: [24] },
+  { id: 26, name: "Orchestration", description: "Kubernetes and container management", dependsOn: [25] },
+
+  // Advanced Architecture
+  { id: 27, name: "System Design", description: "Large-scale system architecture", dependsOn: [7, 22, 26] },
+  { id: 28, name: "Cloud Architecture", description: "Cloud-native development", dependsOn: [27] },
+  { id: 29, name: "Enterprise Architecture", description: "Organization-wide systems", dependsOn: [28] }
+        ];
+
+        const canvas = document.getElementById("skillTreeCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let offsetX = 0, offsetY = 0;
+        let scale = 1;
+        let isDragging = false;
+        let lastMouseX, lastMouseY;
+
+        const cardWidth = 150;
+        const cardHeight = 100;
+        const horizontalSpacing = 200;
+        const verticalSpacing = 150;
+
+        const skillPositions = {};
+        const rowPositions = {}; // Tracks row counts for vertical layout adjustments
+
+        function setupSkillPositions() {
+            
+            skillData.forEach(skill => {
+                skillPositions[skill.id] = {
+                    x: (Math.random()*100)-50,
+                    y: (Math.random()*100)-50,
+                };
+            })
+            /*
+            const levelSpacing = verticalSpacing; // Space between levels
+            const branchSpacing = horizontalSpacing; // Space between branches
+            const levelMap = {}; // Tracks skills by levels for layout
+            
+
+            // Sort skills by dependency count
+            skillData.sort((a, b) => a.dependsOn.length - b.dependsOn.length);
+
+            // Initialize root skill position
+            skillData.forEach(skill => {
+                if (skill.dependsOn.length === 0) {
+                    console.log("skillPositions[" + skill.id + "] = ");
+                    console.log(JSON.parse(JSON.stringify({ x: canvas.width / 2 - cardWidth / 2, y: 50 })));
+                    console.log("levelMap[" + skill.id + "] = ");
+                    console.log(JSON.parse(JSON.stringify([skill.id])));
+                    console.log(skill);
+                    skillPositions[skill.id] = { x: canvas.width / 2 - cardWidth / 2, y: 50 };
+                    levelMap[skill.id] = [skill.id];
+                }
+            });
+            console.log("levelMap:")
+            console.log(JSON.parse(JSON.stringify(levelMap)));
+            console.log("skillpositions:")
+            console.log(JSON.parse(JSON.stringify(skillPositions)));
+
+            // Process all skills to assign positions
+            skillData.forEach(skill => {
+                console.log("==========")
+                if (skill.dependsOn.length === 0) {
+                    
+                    console.log("Returning 1: ");
+                    console.log(skill);
+                    return; // Root skill already placed
+                }
+
+                // Get dependent skill positions
+                const parentPositions = skill.dependsOn
+                    .map(depId => skillPositions[depId])
+                    .filter(Boolean); // Only keep valid dependencies
+
+                if (parentPositions.length === 0) {
+                    console.log("Returning 2: ");
+                    console.log(skill);
+                    return; // Skip if no valid parents
+                }
+
+                // Calculate position dynamically based on parents
+                console.log("skill:")
+                console.log(JSON.parse(JSON.stringify(skill)));
+                console.log("skillname:")
+                console.log(JSON.parse(JSON.stringify(skill.name)));
+                console.log("dependsON:")
+                console.log(JSON.parse(JSON.stringify(skill.dependsOn)));
+                console.log("levelMap:")
+                console.log(JSON.parse(JSON.stringify(levelMap)));
+                console.log("inner:")
+                console.log(JSON.parse(JSON.stringify(...skill.dependsOn.map(depId => levelMap[depId] || 0))));
+
+                
+                const level = Math.max(...skill.dependsOn.map(depId => levelMap[depId] || 0)) + 1;
+                levelMap[level] = levelMap[level] || []; // Ensure levelMap[level] is an array
+
+                const branchIndex = levelMap[level].length; // Get current branch index at this level
+                const parentXAvg = parentPositions.reduce((sum, p) => sum + p.x, 0) / parentPositions.length;
+
+                // Assign position for the current skill
+                skillPositions[skill.id] = {
+                    x: parentXAvg + branchIndex * branchSpacing - (levelMap[level].length / 2) * branchSpacing,
+                    y: 50 + level * levelSpacing,
+                };
+                console.log("skillpos:")
+                console.log(JSON.parse(JSON.stringify(skillPositions[skill.id])));
+
+                levelMap[level].push(skill.id); // Track this skill at its level
+            });*/
+        }
+
+
+
+        function drawSkillTree() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(scale, scale);
+
+            // Draw connections
+            skillData.forEach(skill => {
+                console.log("skillID: " + skill.id)
+                const { x, y } = skillPositions[skill.id];
+                skill.dependsOn.forEach(depId => {
+                    console.log("skill_id = " + skill.id + " , depID = " + depId);
+                    
+                    const dep = skillPositions[depId];
+                    ctx.beginPath();
+                    ctx.moveTo(dep.x + cardWidth / 2, dep.y + cardHeight);
+                    ctx.lineTo(x + cardWidth / 2, y);
+                    ctx.strokeStyle = "#aaa";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+            });
+            console.log("Skilldata = ");
+            console.log(skillData);
+            console.log("Skillpos = ");
+            console.log(skillPositions);
+
+            // Draw skill cards
+            skillData.forEach(skill => {
+                const { x, y } = skillPositions[skill.id];
+                const isUnlocked = skill.dependsOn.every(depId => skillPositions[depId].achieved);
+
+                // Card background
+                //ctx.fillStyle = isUnlocked ? "#4caf50" : "#ddd";
+                let card_bg_color = (isUnlocked ? (skillPositions[skill.id].achieved ?  "#52f27e" : "#f7f7f7" ) : "#ccc");
+                //ctx.fillStyle = isUnlocked ? "#d2fadd" : "#ddd";
+                ctx.fillStyle = card_bg_color;
+                ctx.fillRect(x, y, cardWidth, cardHeight);
+
+                // Card border
+                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+                // Skill title
+                ctx.fillStyle = "#000";
+                ctx.font = "16px Arial";
+                ctx.fillText(skill.name, x + 10, y + 25);
+
+                // Skill id
+                ctx.fillStyle = "#333";
+                ctx.font = "14px Arial";
+                ctx.fillText(skill.id, x + cardWidth - 15, y + 23);
+
+                // Skill description
+                ctx.fillStyle = "#000";
+                ctx.font = "12px Arial";
+                ctx.fillText(skill.description, x + 10, y + 50);
+
+                // Checkbox
+                ctx.beginPath();
+                ctx.rect(x + 10, y + 70, 15, 15);
+                ctx.stroke();
+
+                if (skillPositions[skill.id].achieved) {
+                    ctx.fillStyle = "#000";
+                    ctx.fillRect(x + 12, y + 72, 11, 11);
+                }
+            });
+
+            ctx.restore();
+        }
+
+        function applyRepellingForce() {
+            const minDistance = 300; // Minimum distance between skills
+            const forceFactor = 0.1; // Strength of the repelling force
+            const maxIterations = 10; // Limit iterations to prevent endless adjustments
+
+            for (let iteration = 0; iteration < maxIterations; iteration++) {
+                let moved = false;
+
+                // Compare each skill against every other skill
+                skillData.forEach(skillA => {
+                    skillData.forEach(skillB => {
+                        if (skillA.id === skillB.id) return; // Skip comparing the same skill
+
+                        const posA = skillPositions[skillA.id];
+                        const posB = skillPositions[skillB.id];
+
+                        if (!posA || !posB) return; // Skip if positions are undefined
+
+                        const dx = posB.x - posA.x;
+                        const dy = posB.y - posA.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < minDistance) {
+                            moved = true;
+
+                            // Calculate repelling force
+                            const force = (minDistance - distance) * forceFactor;
+
+                            // Normalize direction
+                            const angle = Math.atan2(dy, dx);
+                            const fx = force * Math.cos(angle);
+                            const fy = force * Math.sin(angle);
+
+                            // Apply force to separate the skills
+                            posB.x += fx;
+                            posB.y += fy;
+                            posA.x -= fx;
+                            posA.y -= fy;
+                        }
+                    });
+                });
+
+                // Stop if no skills were moved
+                if (!moved) break;
+            }
+        }
+
+
+        function toggleSkillAchieved(skillId) {
+            const skill = skillData.find(s => s.id === skillId);
+            if (!skill) return;
+
+            const isUnlocked = skill.dependsOn.every(depId => skillPositions[depId].achieved);
+
+            if (isUnlocked) {
+                skillPositions[skillId].achieved = !skillPositions[skillId].achieved;
+
+                if (!skillPositions[skillId].achieved) {
+                    skillData.forEach(s => {
+                        if (s.dependsOn.includes(skillId)) {
+                            skillPositions[s.id].achieved = false;
+                        }
+                    });
+                }
+            }
+
+            drawSkillTree();
+        }
+
+        function handleMouseDown(e) {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        }
+
+        function handleMouseUp() {
+            isDragging = false;
+        }
+
+        function handleMouseMove(e) {
+            if (isDragging) {
+                const dx = e.clientX - lastMouseX;
+                const dy = e.clientY - lastMouseY;
+
+                offsetX += dx;
+                offsetY += dy;
+
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+
+                drawSkillTree();
+            }
+        }
+
+        function handleWheel(e) {
+            const scaleAmount = 1.1;
+            const mouseX = (e.clientX - offsetX) / scale;
+            const mouseY = (e.clientY - offsetY) / scale;
+
+            if (e.deltaY < 0) {
+                scale *= scaleAmount;
+            } else {
+                scale /= scaleAmount;
+            }
+
+            offsetX = e.clientX - mouseX * scale;
+            offsetY = e.clientY - mouseY * scale;
+
+            drawSkillTree();
+        }
+
+        function handleCanvasClick(e) {
+            const mouseX = (e.clientX - offsetX) / scale;
+            const mouseY = (e.clientY - offsetY) / scale;
+
+            skillData.forEach(skill => {
+                const { x, y } = skillPositions[skill.id];
+                if (mouseX > x && mouseX < x + cardWidth && mouseY > y && mouseY < y + cardHeight) {
+                    const checkboxX = x + 10;
+                    const checkboxY = y + 70;
+                    if (mouseX > checkboxX && mouseX < checkboxX + 15 && mouseY > checkboxY && mouseY < checkboxY + 15) {
+                        toggleSkillAchieved(skill.id);
+                    }
+                }
+            });
+        }
+
+        canvas.addEventListener("mousedown", handleMouseDown);
+        canvas.addEventListener("mouseup", handleMouseUp);
+        canvas.addEventListener("mousemove", handleMouseMove);
+        canvas.addEventListener("wheel", handleWheel);
+        canvas.addEventListener("click", handleCanvasClick);
+
+        setupSkillPositions();
+        console.log("Before force")
+        console.log(JSON.parse(JSON.stringify(skillPositions)));
+        applyRepellingForce();
+        
+        console.log("After force")
+        console.log(JSON.parse(JSON.stringify(skillPositions)));
+        drawSkillTree();
+    </script>
+</body>
+</html>

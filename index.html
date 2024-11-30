@@ -13,6 +13,7 @@
             display: block;
             background-color: #f0f0f0;
         }
+        
         /* General styles for the popup */
         #popup {
             /* Visual appearance */
@@ -24,8 +25,8 @@
             /* Size and positioning */
             width: 800px;
             height: 800px;
-            max-width: 90%; /* Ensures responsiveness */
-            max-height: 70%; /* Ensures responsiveness */
+            max-width: 90%;
+            max-height: 70%;
             padding: 24px;
             position: fixed;
             top: 50%;
@@ -34,7 +35,6 @@
             z-index: 1000;
             display: block;
         }
-
 
         /* Close button */
         #popup-close {
@@ -70,7 +70,40 @@
             line-height: 1.5;
         }
 
-        /* Add a button for action (optional) */
+        /* Long description */
+        #popup-long-description {
+            font-size: 0.9rem;
+            color: #555555;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        /* Skill requirements list */
+        #popup-skill-requirements {
+            font-size: 0.9rem;
+            color: #333333;
+            margin-top: 16px;
+        }
+
+        #popup-skill-requirements ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        /* Checkbox styles */
+        #popup-checkbox-container {
+            margin-top: 16px;
+            font-size: 1rem;
+            color: #333333;
+            display: flex;
+            align-items: center;
+        }
+
+        #popup-checkbox {
+            margin-right: 8px;
+        }
+
+        /* Add a button for action */
         #popup-action {
             margin-top: 16px;
             padding: 10px 20px;
@@ -83,16 +116,32 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .blur {
-            filter: blur(2px);
-        }
-        .darken {
-            filter: brightness(50%);
-        }
-
         #popup-action:hover {
             background-color: #0056b3;
             transform: translateY(-2px);
+        }
+
+        /* Image container */
+        #popup-image-container {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        #popup-image {
+            width: 200px;
+            height: 300px;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .blur {
+            filter: blur(2px);
+        }
+
+        .darken {
+            filter: brightness(50%);
         }
 
     </style>
@@ -101,18 +150,59 @@
     <!-- Popup structure -->
     <div id="popup">
         <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-            <div> <!-- Top -->
-                <button id="popup-close">&times;</button>
-                <h3 id="popup-title">Popup Title</h3>
-                <p id="popup-description">This is a description of the popup content. It provides important information for the user in a concise and clear way.</p>
+            <!-- Top section -->
+            <button id="popup-close">&times;</button>
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <h3 id="popup-title">Popup Title</h3>
+                    <p id="popup-description">This is a short description of the popup content.</p>
+                </div>
+                
+                <!-- Checkbox for unlocked state -->
+                <div id="popup-checkbox-container">
+                    <input type="checkbox" id="popup-checkbox">
+                    <label for="popup-checkbox">Skill Unlocked</label>
+                </div>
             </div>
 
-        
+            <div style="display: flex; justify-content: space-between;">
+                <div style=" width: 50%;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum orci massa, ultricies quis tortor ac, dignissim sollicitudin erat. Donec faucibus ex vel iaculis elementum. Morbi rhoncus nisi tellus. Nullam vel venenatis ante. Phasellus sodales porta nunc ac rutrum. Sed non dapibus metus, nec dictum ante. Aliquam egestas semper suscipit. Donec malesuada nec nulla eu pretium. Nam et nibh quis massa efficitur consequat. Suspendisse mollis ut enim quis dictum. Vivamus tristique, augue non iaculis tincidunt, ipsum mi porttitor nisi, vitae pellentesque lectus ex ut justo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+
+                        Phasellus quis molestie diam, et molestie tellus. Proin ligula eros, dignissim quis enim ut, sagittis fringilla sapien. Integer rutrum laoreet auctor. Sed ligula est, consequat ut nisl eu, eleifend faucibus augue. Proin interdum, sapien ut mollis euismod, nisi erat facilisis diam, a aliquam mauris libero vel ipsum. Nulla posuere quam nec velit efficitur, nec accumsan massa dictum. Nulla libero nibh, euismod sed orci non, finibus pellentesque lacus. Vivamus facilisis tincidunt semper. Duis luctus ex a erat iaculis, eget maximus lacus aliquet. Suspendisse a dapibus nisi, vel vulputate felis.</p>
+                </div>
+                
+                <div style="width: 30%;">
+                    <!-- Skill requirements -->
+                    <div id="popup-skill-requirements">
+                        <h4>Required Skills</h4>
+                        <ul>
+                            <li>Skill 1</li>
+                            <li>Skill 2</li>
+                        </ul>
+                    </div>
+
+                    <!-- Image container -->
+                    <div id="popup-image-container">
+                        <img id="popup-image" src="https://www.wargamer.com/wp-content/sites/wargamer/2022/07/dnd-fireball-5e-firespout.jpg" alt="Skill image">
+                        <!--<p id="popup-image-placeholder" style="color: #888;">No image available</p>-->
+                    </div>
+                </div>
+            </div>
+    
+            
+    
+            
+    
+            
+    
+            <!-- Bottom section -->
             <div>
                 <button id="popup-action">Take Action</button>
             </div>
         </div>
     </div>
+
     <div id="popup-blur-bg" style="width: 200vw; height: 200vh; position: absolute;"> <!-- bg dark and blurry when popup -->
         <div id="popup-darken-bg" style="width: 100%; height: 100%; position: absolute;"> <!-- bg dark and blurry when popup -->
             <div id="click-to-hide" style="position: absolute; width: 100%; height: 100%;"></div> <!-- click to hide -->
@@ -710,20 +800,11 @@
                     if (mouseX > checkboxX && mouseX < checkboxX + 15 && mouseY > checkboxY && mouseY < checkboxY + 15) {
                         toggleSkillAchieved(skill.id);
                     }
+                    else {
+                        showPopup(skill);
+                    }
                 }
             });
-
-            let skillClicked = null;
-            skillData.forEach(skill => {
-                const { x, y } = skillPositions[skill.id];
-                if (mouseX > x && mouseX < x + cardWidth && mouseY > y && mouseY < y + cardHeight) {
-                    skillClicked = skill;
-                }
-            });
-
-            if (skillClicked) {
-                showPopup(skillClicked);
-            }
         }
 
 

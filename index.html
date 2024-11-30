@@ -19,7 +19,9 @@
     <canvas id="skillTreeCanvas"></canvas>
 
     <script>
-        const skillData = [
+        
+
+        /*const skillData = [
             // Core Programming Fundamentals
   { id: 1, name: "Variables & Data Types", description: "Understanding basic programming constructs", dependsOn: [] },
   { id: 2, name: "Control Flow", description: "Loops, conditionals, and program flow", dependsOn: [1] },
@@ -64,7 +66,149 @@
   { id: 27, name: "System Design", description: "Large-scale system architecture", dependsOn: [7, 22, 26] },
   { id: 28, name: "Cloud Architecture", description: "Cloud-native development", dependsOn: [27] },
   { id: 29, name: "Enterprise Architecture", description: "Organization-wide systems", dependsOn: [28] }
-        ];
+        ];*/
+
+        const skillData = [
+  // Core Starting Skills
+  { id: 1, name: "Arcane Fundamentals", description: "Basic magic theory", dependsOn: [] },
+  { id: 2, name: "Martial Basics", description: "Basic combat training", dependsOn: [] },
+  { id: 3, name: "Natural Affinity", description: "Connection to nature", dependsOn: [] },
+  { id: 4, name: "Divine Calling", description: "Basic divine magic", dependsOn: [] },
+
+  // Arcane Path - Evocation Branch
+  { id: 5, name: "Energy Manipulation", description: "Control magical energy", dependsOn: [1] },
+  { id: 6, name: "Fire Mastery", description: "Fire spell specialist", dependsOn: [5] },
+  { id: 7, name: "Lightning Control", description: "Lightning spell focus", dependsOn: [5] },
+  { id: 8, name: "Frost Magic", description: "Ice and cold spells", dependsOn: [5] },
+  { id: 9, name: "Elemental Fusion", description: "Combine elements", dependsOn: [6, 7, 8] },
+  { id: 10, name: "Arcane Explosion", description: "AoE damage", dependsOn: [9] },
+
+  // Arcane Path - Illusion Branch
+  { id: 11, name: "Mind Arts", description: "Basic illusions", dependsOn: [1] },
+  { id: 12, name: "Light Manipulation", description: "Visual illusions", dependsOn: [11] },
+  { id: 13, name: "Sound Weaving", description: "Auditory illusions", dependsOn: [11] },
+  { id: 14, name: "Phantasm Creation", description: "Complex illusions", dependsOn: [12, 13] },
+  { id: 15, name: "Reality Warping", description: "Major illusions", dependsOn: [14] },
+
+  // Arcane Path - Conjuration
+  { id: 16, name: "Summoning Basics", description: "Basic conjuration", dependsOn: [1] },
+  { id: 17, name: "Minor Calling", description: "Small creature summons", dependsOn: [16] },
+  { id: 18, name: "Portal Magic", description: "Teleportation", dependsOn: [16] },
+  { id: 19, name: "Greater Calling", description: "Large creature summons", dependsOn: [17] },
+  { id: 20, name: "Planar Binding", description: "Control extraplanars", dependsOn: [19] },
+
+  // Martial Path - Melee Branch
+  { id: 21, name: "Weapon Mastery", description: "Advanced weapons", dependsOn: [2] },
+  { id: 22, name: "Sword Techniques", description: "Sword specialist", dependsOn: [21] },
+  { id: 23, name: "Shield Master", description: "Shield techniques", dependsOn: [21] },
+  { id: 24, name: "Dual Wielding", description: "Two-weapon fighting", dependsOn: [21] },
+  { id: 25, name: "Combat Reflexes", description: "Quick reactions", dependsOn: [22, 24] },
+
+  // Martial Path - Defense Branch
+  { id: 26, name: "Heavy Armor", description: "Armor proficiency", dependsOn: [2] },
+  { id: 27, name: "Damage Reduction", description: "Reduce incoming damage", dependsOn: [26] },
+  { id: 28, name: "Shield Wall", description: "Enhanced blocking", dependsOn: [23, 26] },
+  { id: 29, name: "Unbreakable", description: "Major resistance", dependsOn: [27, 28] },
+  { id: 30, name: "Living Fortress", description: "Ultimate defense", dependsOn: [29] },
+
+  // Nature Path - Druid Branch
+  { id: 31, name: "Wild Shape", description: "Animal forms", dependsOn: [3] },
+  { id: 32, name: "Beast Speech", description: "Communicate with animals", dependsOn: [31] },
+  { id: 33, name: "Primal Shape", description: "Stronger forms", dependsOn: [31] },
+  { id: 34, name: "Elemental Form", description: "Elemental shapes", dependsOn: [33] },
+  { id: 35, name: "Nature's Avatar", description: "Ultimate form", dependsOn: [34] },
+
+  // Nature Path - Plant Branch
+  { id: 36, name: "Plant Growth", description: "Control plants", dependsOn: [3] },
+  { id: 37, name: "Thorny Growth", description: "Plant attacks", dependsOn: [36] },
+  { id: 38, name: "Healing Herbs", description: "Natural healing", dependsOn: [36] },
+  { id: 39, name: "Forest Mind", description: "Plant communion", dependsOn: [37, 38] },
+  { id: 40, name: "World Tree", description: "Major plant control", dependsOn: [39] },
+
+  // Divine Path - Healing Branch
+  { id: 41, name: "Light Blessing", description: "Basic healing", dependsOn: [4] },
+  { id: 42, name: "Group Healing", description: "Multi-target heals", dependsOn: [41] },
+  { id: 43, name: "Restoration", description: "Remove conditions", dependsOn: [41] },
+  { id: 44, name: "Mass Healing", description: "Large group healing", dependsOn: [42] },
+  { id: 45, name: "Divine Light", description: "Ultimate healing", dependsOn: [44] },
+
+  // Divine Path - Protection Branch
+  { id: 46, name: "Divine Shield", description: "Basic wards", dependsOn: [4] },
+  { id: 47, name: "Holy Barrier", description: "Group protection", dependsOn: [46] },
+  { id: 48, name: "Sacred Ground", description: "Area protection", dependsOn: [47] },
+  { id: 49, name: "Divine Aegis", description: "Major protection", dependsOn: [48] },
+  { id: 50, name: "Heavenly Shield", description: "Ultimate protection", dependsOn: [49] },
+
+  // Hybrid Paths
+  { id: 51, name: "Spellblade", description: "Magic + Combat", dependsOn: [1, 2] },
+  { id: 52, name: "Nature Knight", description: "Nature + Combat", dependsOn: [2, 3] },
+  { id: 53, name: "Battle Priest", description: "Divine + Combat", dependsOn: [2, 4] },
+  { id: 54, name: "Mystic Druid", description: "Nature + Arcane", dependsOn: [1, 3] },
+  { id: 55, name: "Divine Mage", description: "Arcane + Divine", dependsOn: [1, 4] },
+
+  // Advanced Hybrid Skills
+  { id: 56, name: "Elemental Weapon", description: "Imbue weapons", dependsOn: [51, 5] },
+  { id: 57, name: "Nature's Warrior", description: "Enhanced combat", dependsOn: [52, 31] },
+  { id: 58, name: "Holy Strike", description: "Divine attacks", dependsOn: [53, 41] },
+  { id: 59, name: "Wild Magic", description: "Unpredictable power", dependsOn: [54, 33] },
+  { id: 60, name: "Divine Sorcery", description: "Combined magic", dependsOn: [55, 42] },
+
+  // Utility Skills
+  { id: 61, name: "Concentration", description: "Focus magic", dependsOn: [1] },
+  { id: 62, name: "Quick Cast", description: "Fast spells", dependsOn: [61] },
+  { id: 63, name: "Mana Control", description: "Efficient magic", dependsOn: [61] },
+  { id: 64, name: "Battle Focus", description: "Combat concentration", dependsOn: [2, 61] },
+  { id: 65, name: "Mental Shield", description: "Mind protection", dependsOn: [61] },
+
+  // Combat Utility
+  { id: 66, name: "Dodge", description: "Avoid attacks", dependsOn: [2] },
+  { id: 67, name: "Parry", description: "Deflect attacks", dependsOn: [21] },
+  { id: 68, name: "Counter Strike", description: "Return attacks", dependsOn: [67] },
+  { id: 69, name: "Combat Mobility", description: "Battlefield movement", dependsOn: [66] },
+  { id: 70, name: "Battle Master", description: "Combat expert", dependsOn: [68, 69] },
+
+  // Stealth Branch
+  { id: 71, name: "Shadows", description: "Basic stealth", dependsOn: [] },
+  { id: 72, name: "Silent Step", description: "Quiet movement", dependsOn: [71] },
+  { id: 73, name: "Shadow Walk", description: "Shadow travel", dependsOn: [72] },
+  { id: 74, name: "Invisibility", description: "True stealth", dependsOn: [73] },
+  { id: 75, name: "Shadow Master", description: "Ultimate stealth", dependsOn: [74] },
+
+  // Arcane Specializations
+  { id: 76, name: "Spell Focus", description: "Enhance spells", dependsOn: [1, 61] },
+  { id: 77, name: "Metamagic", description: "Modify spells", dependsOn: [76] },
+  { id: 78, name: "Spell Pierce", description: "Bypass resistance", dependsOn: [77] },
+  { id: 79, name: "Chain Spell", description: "Multi-target", dependsOn: [77] },
+  { id: 80, name: "Archmage", description: "Ultimate caster", dependsOn: [78, 79] },
+
+  // Combat Specializations
+  { id: 81, name: "Critical Focus", description: "Enhanced crits", dependsOn: [21] },
+  { id: 82, name: "Vital Strike", description: "Precise hits", dependsOn: [81] },
+  { id: 83, name: "Multiple Attacks", description: "Attack chains", dependsOn: [81] },
+  { id: 84, name: "Combat Flow", description: "Fluid combat", dependsOn: [82, 83] },
+  { id: 85, name: "Weapon Saint", description: "Perfect warrior", dependsOn: [84] },
+
+  // Nature Specializations
+  { id: 86, name: "Weather Control", description: "Control weather", dependsOn: [3, 36] },
+  { id: 87, name: "Storm Caller", description: "Create storms", dependsOn: [86] },
+  { id: 88, name: "Nature's Wrath", description: "Environmental damage", dependsOn: [87] },
+  { id: 89, name: "Cataclysm", description: "Major weather", dependsOn: [88] },
+  { id: 90, name: "Force of Nature", description: "Nature master", dependsOn: [89] },
+
+  // Divine Specializations
+  { id: 91, name: "Divine Channel", description: "Channel power", dependsOn: [4, 41] },
+  { id: 92, name: "Holy Power", description: "Enhanced divine", dependsOn: [91] },
+  { id: 93, name: "Sacred Healing", description: "Supreme healing", dependsOn: [92] },
+  { id: 94, name: "Divine Intervention", description: "God's aid", dependsOn: [93] },
+  { id: 95, name: "Avatar", description: "Divine master", dependsOn: [94] },
+
+  // Ultimate Skills
+  { id: 96, name: "Time Magic", description: "Control time", dependsOn: [80, 15] },
+  { id: 97, name: "Perfect Form", description: "Combat perfection", dependsOn: [85, 70] },
+  { id: 98, name: "World Shaper", description: "Control reality", dependsOn: [90, 40] },
+  { id: 99, name: "Transcendence", description: "Divine ascension", dependsOn: [95, 60] },
+  { id: 100, name: "Legendary", description: "True master", dependsOn: [96, 97, 98, 99] }
+];
 
         const canvas = document.getElementById("skillTreeCanvas");
         const ctx = canvas.getContext("2d");
@@ -82,94 +226,58 @@
         const horizontalSpacing = 200;
         const verticalSpacing = 150;
 
+        let hoveredSkillId = null;
+        let hoverOpacity = 0.5; // Current opacity of the highlight
+        let hoverStartTime = null; // When the hover started
+        const hoverFadeDuration = 100; // Fade duration in milliseconds
+
+
         const skillPositions = {};
         const rowPositions = {}; // Tracks row counts for vertical layout adjustments
 
         function setupSkillPositions() {
-            
-            skillData.forEach(skill => {
-                skillPositions[skill.id] = {
-                    x: (Math.random()*100)-50,
-                    y: (Math.random()*100)-50,
-                };
-            })
-            /*
-            const levelSpacing = verticalSpacing; // Space between levels
-            const branchSpacing = horizontalSpacing; // Space between branches
-            const levelMap = {}; // Tracks skills by levels for layout
-            
+            const levelSpacing = 200; // Vertical space between levels
+            const horizontalSpacing = 300; // Horizontal space between skills
+            const levels = {}; // Group skills by their depth level
 
-            // Sort skills by dependency count
-            skillData.sort((a, b) => a.dependsOn.length - b.dependsOn.length);
-
-            // Initialize root skill position
-            skillData.forEach(skill => {
-                if (skill.dependsOn.length === 0) {
-                    console.log("skillPositions[" + skill.id + "] = ");
-                    console.log(JSON.parse(JSON.stringify({ x: canvas.width / 2 - cardWidth / 2, y: 50 })));
-                    console.log("levelMap[" + skill.id + "] = ");
-                    console.log(JSON.parse(JSON.stringify([skill.id])));
-                    console.log(skill);
-                    skillPositions[skill.id] = { x: canvas.width / 2 - cardWidth / 2, y: 50 };
-                    levelMap[skill.id] = [skill.id];
+            // Calculate depth of each skill based on dependencies
+            const skillDepth = {};
+            function calculateDepth(skillId) {
+                if (skillDepth[skillId] !== undefined) return skillDepth[skillId];
+                const skill = skillData.find(s => s.id === skillId);
+                if (!skill || skill.dependsOn.length === 0) {
+                    skillDepth[skillId] = 0; // Starting skills have depth 0
+                    return 0;
                 }
+                const depth = Math.max(...skill.dependsOn.map(calculateDepth)) + 1;
+                skillDepth[skillId] = depth;
+                return depth;
+            }
+
+            // Populate levels
+            skillData.forEach(skill => {
+                const depth = calculateDepth(skill.id);
+                if (!levels[depth]) levels[depth] = [];
+                levels[depth].push(skill.id);
             });
-            console.log("levelMap:")
-            console.log(JSON.parse(JSON.stringify(levelMap)));
-            console.log("skillpositions:")
-            console.log(JSON.parse(JSON.stringify(skillPositions)));
 
-            // Process all skills to assign positions
-            skillData.forEach(skill => {
-                console.log("==========")
-                if (skill.dependsOn.length === 0) {
-                    
-                    console.log("Returning 1: ");
-                    console.log(skill);
-                    return; // Root skill already placed
-                }
+            // Assign positions based on levels
+            const centerX = window.innerWidth / 2;
+            Object.keys(levels).forEach(level => {
+                const skills = levels[level];
+                const totalWidth = (skills.length - 1) * horizontalSpacing; // Total width occupied by this level
+                const startX = centerX - totalWidth / 2; // Center the level horizontally
 
-                // Get dependent skill positions
-                const parentPositions = skill.dependsOn
-                    .map(depId => skillPositions[depId])
-                    .filter(Boolean); // Only keep valid dependencies
-
-                if (parentPositions.length === 0) {
-                    console.log("Returning 2: ");
-                    console.log(skill);
-                    return; // Skip if no valid parents
-                }
-
-                // Calculate position dynamically based on parents
-                console.log("skill:")
-                console.log(JSON.parse(JSON.stringify(skill)));
-                console.log("skillname:")
-                console.log(JSON.parse(JSON.stringify(skill.name)));
-                console.log("dependsON:")
-                console.log(JSON.parse(JSON.stringify(skill.dependsOn)));
-                console.log("levelMap:")
-                console.log(JSON.parse(JSON.stringify(levelMap)));
-                console.log("inner:")
-                console.log(JSON.parse(JSON.stringify(...skill.dependsOn.map(depId => levelMap[depId] || 0))));
-
-                
-                const level = Math.max(...skill.dependsOn.map(depId => levelMap[depId] || 0)) + 1;
-                levelMap[level] = levelMap[level] || []; // Ensure levelMap[level] is an array
-
-                const branchIndex = levelMap[level].length; // Get current branch index at this level
-                const parentXAvg = parentPositions.reduce((sum, p) => sum + p.x, 0) / parentPositions.length;
-
-                // Assign position for the current skill
-                skillPositions[skill.id] = {
-                    x: parentXAvg + branchIndex * branchSpacing - (levelMap[level].length / 2) * branchSpacing,
-                    y: 50 + level * levelSpacing,
-                };
-                console.log("skillpos:")
-                console.log(JSON.parse(JSON.stringify(skillPositions[skill.id])));
-
-                levelMap[level].push(skill.id); // Track this skill at its level
-            });*/
+                skills.forEach((skillId, index) => {
+                    skillPositions[skillId] = {
+                        x: startX + index * horizontalSpacing,
+                        y: level * levelSpacing
+                    };
+                });
+            });
         }
+
+
 
 
 
@@ -180,26 +288,34 @@
             ctx.translate(offsetX, offsetY);
             ctx.scale(scale, scale);
 
+            // Update hover opacity based on timing
+            if (hoveredSkillId && hoverStartTime) {
+                const elapsedTime = performance.now() - hoverStartTime;
+                hoverOpacity = Math.min(elapsedTime / hoverFadeDuration, 1); // Gradually increase to 1
+            }
+
             // Draw connections
             skillData.forEach(skill => {
-                console.log("skillID: " + skill.id)
                 const { x, y } = skillPositions[skill.id];
+
                 skill.dependsOn.forEach(depId => {
-                    console.log("skill_id = " + skill.id + " , depID = " + depId);
-                    
                     const dep = skillPositions[depId];
+
                     ctx.beginPath();
                     ctx.moveTo(dep.x + cardWidth / 2, dep.y + cardHeight);
                     ctx.lineTo(x + cardWidth / 2, y);
-                    ctx.strokeStyle = "#aaa";
-                    ctx.lineWidth = 2;
+
+                    if (hoveredSkillId === skill.id || hoveredSkillId === depId) {
+                        ctx.strokeStyle = `rgba(136, 136, 136, ${hoverOpacity})`; // Highlight with fade effect
+                        ctx.lineWidth = 5;
+                    } else {
+                        ctx.strokeStyle = "#aaa";
+                        ctx.lineWidth = 2;
+                    }
+
                     ctx.stroke();
                 });
             });
-            console.log("Skilldata = ");
-            console.log(skillData);
-            console.log("Skillpos = ");
-            console.log(skillPositions);
 
             // Draw skill cards
             skillData.forEach(skill => {
@@ -246,6 +362,8 @@
 
             ctx.restore();
         }
+
+
 
         function applyRepellingForce() {
             const minDistance = 300; // Minimum distance between skills
@@ -294,6 +412,96 @@
             }
         }
 
+        function applyAttractingForce() {
+            const maxDistance = 300; // Maximum allowed distance between connected skills
+            const attractionFactor = 0.05; // Strength of the attracting force
+            const maxIterations = 10; // Limit iterations to prevent endless adjustments
+
+            for (let iteration = 0; iteration < maxIterations; iteration++) {
+                let moved = false;
+
+                skillData.forEach(skill => {
+                    const posA = skillPositions[skill.id];
+
+                    skill.dependsOn.forEach(depId => {
+                        const posB = skillPositions[depId];
+
+                        if (!posA || !posB) return; // Skip if positions are undefined
+
+                        const dx = posB.x - posA.x;
+                        const dy = posB.y - posA.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance > maxDistance) {
+                            moved = true;
+
+                            // Calculate attracting force
+                            const force = (distance - maxDistance) * attractionFactor;
+
+                            // Normalize direction
+                            const angle = Math.atan2(dy, dx);
+                            const fx = force * Math.cos(angle);
+                            const fy = force * Math.sin(angle);
+
+                            // Apply force to pull the skills closer together
+                            posB.x -= fx;
+                            posB.y -= fy;
+                            posA.x += fx;
+                            posA.y += fy;
+                        }
+                    });
+                });
+
+                // Stop if no skills were moved
+                if (!moved) break;
+            }
+        }
+
+        function alignSkillsByHierarchy() {
+            const levelSpacing = 150; // Vertical space between levels
+            const iterations = 10; // Number of iterations to smooth the hierarchy
+
+            // Calculate depth of each skill based on its dependencies
+            const skillDepth = {};
+            function calculateDepth(skillId) {
+                if (skillDepth[skillId] !== undefined) return skillDepth[skillId];
+                const skill = skillData.find(s => s.id === skillId);
+                if (!skill || skill.dependsOn.length === 0) {
+                    skillDepth[skillId] = 0; // Starting skills have depth 0
+                    return 0;
+                }
+                const depth = Math.max(...skill.dependsOn.map(calculateDepth)) + 1;
+                skillDepth[skillId] = depth;
+                return depth;
+            }
+
+            // Calculate depth for all skills
+            skillData.forEach(skill => calculateDepth(skill.id));
+
+            // Adjust positions iteratively
+            for (let i = 0; i < iterations; i++) {
+                let moved = false;
+
+                skillData.forEach(skill => {
+                    const pos = skillPositions[skill.id];
+                    const targetY = skillDepth[skill.id] * levelSpacing;
+
+                    if (Math.abs(pos.y - targetY) > 1) {
+                        moved = true;
+
+                        // Smoothly move toward target position
+                        const diff = targetY - pos.y;
+                        pos.y += diff * 0.1; // Adjust factor for smooth movement
+                    }
+                });
+
+                // Break early if no skills moved significantly
+                if (!moved) break;
+            }
+        }
+
+
+
 
         function toggleSkillAchieved(skillId) {
             const skill = skillData.find(s => s.id === skillId);
@@ -328,6 +536,7 @@
 
         function handleMouseMove(e) {
             if (isDragging) {
+                // Handle dragging
                 const dx = e.clientX - lastMouseX;
                 const dy = e.clientY - lastMouseY;
 
@@ -338,8 +547,36 @@
                 lastMouseY = e.clientY;
 
                 drawSkillTree();
+            } else {
+                // Handle hover detection
+                const mouseX = (e.clientX - offsetX) / scale;
+                const mouseY = (e.clientY - offsetY) / scale;
+
+                let foundHover = false;
+
+                skillData.forEach(skill => {
+                    const { x, y } = skillPositions[skill.id];
+                    if (mouseX > x && mouseX < x + cardWidth && mouseY > y && mouseY < y + cardHeight) {
+                        if (hoveredSkillId !== skill.id) {
+                            hoveredSkillId = skill.id;
+                            hoverStartTime = performance.now(); // Record hover start time
+                        }
+                        foundHover = true;
+                    }
+                });
+
+                if (!foundHover) {
+                    hoveredSkillId = null;
+                    hoverOpacity = 0.5; // Reset opacity when not hovering
+                    hoverStartTime = null;
+                }
+
+                drawSkillTree();
             }
         }
+
+
+
 
         function handleWheel(e) {
             const scaleAmount = 1.1;
@@ -374,16 +611,34 @@
             });
         }
 
+
+
+        
+
+
+
         canvas.addEventListener("mousedown", handleMouseDown);
         canvas.addEventListener("mouseup", handleMouseUp);
         canvas.addEventListener("mousemove", handleMouseMove);
         canvas.addEventListener("wheel", handleWheel);
         canvas.addEventListener("click", handleCanvasClick);
 
+
         setupSkillPositions();
         console.log("Before force")
         console.log(JSON.parse(JSON.stringify(skillPositions)));
         applyRepellingForce();
+        //applyAttractingForce();
+        //applyRepellingForce();
+        //alignSkillsByHierarchy();
+        
+        
+        for(let i = 0; i<-1; i++){
+            alignSkillsByHierarchy();
+            applyAttractingForce();
+            applyRepellingForce();
+        }
+
         
         console.log("After force")
         console.log(JSON.parse(JSON.stringify(skillPositions)));
